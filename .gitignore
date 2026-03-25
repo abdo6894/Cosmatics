@@ -27,7 +27,7 @@ appsettings.Staging.json
 secrets.json
 .env
 *.env
-
+deploy.bat
 *.pfx
 *.p12
 certs/
