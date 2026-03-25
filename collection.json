@@ -1,0 +1,643 @@
+{
+  "info": {
+    "_postman_id": "54874a1d-c34c-4927-b4c7-ad50718dd66a",
+    "name": "Cosmatics API Copy",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "id": "10c94b11-76e0-4c2e-8f34-f92dd0d70c4b",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser2\",\n    \"countryCode\": \"+20\",\n    \"phoneNumber\": \"123456780\",\n    \"email\": \"test2@example.com\",\n    \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify OTP",
+          "id": "cf09766c-a6e5-4048-9288-45dc372dd152",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"countryCode\": \"+20\",\n    \"phoneNumber\": \"123456780\",\n    \"otpCode\": \"5150\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/verify-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "verify-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resend OTP",
+          "id": "b266d8b8-5a66-436c-a569-f692bbfb55f1",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"countryCode\": \"+20\",\n    \"phoneNumber\": \"1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/resend-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "resend-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b1c5fabe-fa6b-4ae9-9358-d11d4e2820c4",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// تحقق أن الرد يحتوي على التوكن الجديد",
+                  "if (jsonData.token && jsonData.refreshToken) {",
+                  "    // هذه الخطوة هي الأهم: تحديث المتغيرات بالقيم الجديدة",
+                  "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);",
+                  "    pm.collectionVariables.set(\"refresh_token\", jsonData.refreshToken);",
+                  "    ",
+                  "    console.log(\"New tokens updated successfully!\");",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "823f1e55-f65a-4311-9f29-0a8ad2f0ab38",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "2289d37b-8009-402f-8570-fdc15fdf966c",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"countryCode\": \"+20\",\n    \"phoneNumber\": \"1234567890\",\n    \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "id": "d558f5f5-68fe-4d95-8991-027139732911",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"countryCode\": \"+20\",\n    \"phoneNumber\": \"1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "forgot-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "id": "e5506937-a05b-425c-a713-6d36fba6e50c",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"countryCode\": \"+20\",\n    \"phoneNumber\": \"1234567890\",\n    \"newPassword\": \"NewPassword123!\",\n    \"confirmPassword\": \"NewPassword123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile",
+          "id": "280b6b39-0765-481b-b40a-2762d7a5b98e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "id": "11ced405-765b-44ff-9d51-b3048c527579",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"updatedUsername\",\n    \"email\": \"updated@example.com\",\n    \"profilePhotoUrl\": \"http://example.com/photo.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "id": "efc34a75-786f-4d1c-8157-032ebc076e53",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Countries",
+          "id": "08d2f3ca-ad28-4dbe-a60b-30e4e9d5a6e0",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Countries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Countries"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Tokean",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "c869c342-50d7-48b9-969c-16b73ed08a38",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "23af30df-fde7-4901-ab4b-01e05a257750",
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "// تحقق أن الرد يحتوي على التوكن الجديد\r",
+                  "if (jsonData.token && jsonData.refreshToken) {\r",
+                  "    // هذه الخطوة هي الأهم: تحديث المتغيرات بالقيم الجديدة\r",
+                  "    pm.collectionVariables.set(\"jwt_token\", jsonData.token);\r",
+                  "    pm.collectionVariables.set(\"refresh_token\", jsonData.refreshToken);\r",
+                  "    \r",
+                  "    console.log(\"New tokens updated successfully!\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "id": "64e84bcd-f401-4ba7-b02b-04f70e75cdac",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"refreshToken\": \"{{refresh_token}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "7156bb68-0f8c-4f64-9f4f-897c4dae5f11"
+    },
+    {
+      "name": "Home",
+      "item": [
+        {
+          "name": "Cart",
+          "item": [
+            {
+              "name": "Get Cart",
+              "id": "ea79e8c1-4278-4f46-9223-8669f9f97c86",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/Cart",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "Cart"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Add to Cart",
+              "id": "9f6dde8b-6236-46d8-be9e-8d806efbb220",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/Cart/add?productId=1&quantity=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "Cart",
+                    "add"
+                  ],
+                  "query": [
+                    {
+                      "key": "productId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "quantity",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Cart Item",
+              "id": "fdf35670-38e9-4834-8cfa-3ad2af5a4a83",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/Cart/update?productId=1&quantity=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "Cart",
+                    "update"
+                  ],
+                  "query": [
+                    {
+                      "key": "productId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "quantity",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Remove from Cart",
+              "id": "48a8a8bd-e2b0-4b4d-88f4-557f7ba7f977",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/Cart/remove/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "Cart",
+                    "remove",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "id": "f50d9574-804f-4d00-b2ae-511910370373"
+        },
+        {
+          "name": "Get All Sliders",
+          "id": "5f8653e6-3ae1-4ff4-ba66-bf16bf0a4ec9",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Sliders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Sliders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Categories",
+          "id": "095a518f-450a-487c-8c5c-3bf8d60fbddd",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Products",
+          "id": "f291f6f1-13ee-4b2d-8ef1-6345a51ffc9d",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Products"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "f4dc3e6c-9553-484b-8669-a2801ab23f0e"
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "checkout",
+          "id": "189b24f3-88b5-4e5f-8f54-6f50374db938",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": 1002,\r\n  \"paymentMethod\": \"stripe\",\r\n  \"successUrl\": \"https://example.com/success\",\r\n  \"cancelUrl\": \"https://example.com/cancel\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "payment",
+                "checkout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Webhok",
+          "id": "c683d8a4-f432-495e-94cb-0f6c3721002a",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/webhook",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "payment",
+                "webhook"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "86764813-93f1-430c-816e-e5f487a34fd9"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "id": "94ce793d-696f-42d2-b5b8-156b624c9718",
+      "key": "baseUrl",
+      "value": "https://cosmatics.growfet.com"
+    },
+    {
+      "id": "ea664ada-ee33-408d-9099-1d42e4c13eca",
+      "key": "jwt_token",
+      "value": ""
+    },
+    {
+      "id": "8a241120-edf3-492c-94d3-b0f2825b0b9d",
+      "key": "refresh_token",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

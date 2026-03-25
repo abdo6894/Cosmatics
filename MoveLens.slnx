@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/MoveLens.API/MoveLens.API.csproj" />
+    <Project Path="src/MoveLens.Application/MoveLens.Application.csproj" />
+    <Project Path="src/MoveLens.Domain/MoveLens.Domain.csproj" />
+    <Project Path="src/MoveLens.Infrastructure/MoveLens.Infrastructure.csproj" />
+  </Folder>
+</Solution>

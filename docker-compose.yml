@@ -1,0 +1,109 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: Cosmatics_DB
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SA_PASSWORD:-YourStrong@Password123}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: 
+        - CMD
+        - /opt/mssql-tools18/bin/sqlcmd
+        - -S
+        - localhost
+        - -U
+        - sa
+        - -P
+        - ${SA_PASSWORD:-YourStrong@Password123}
+        - -C
+        - -Q
+        - "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks:
+      - cosmatics-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    container_name: Cosmatics_Redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cosmatics-network
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cosmatics-api-image
+    container_name: Cosmatics_Backend
+    ports:
+      - "7000:8080"   
+      - "7001:8081"   
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Cosmatics;User Id=sa;Password=${SA_PASSWORD:-YourStrong@Password123};TrustServerCertificate=True
+      - ConnectionStrings__RedisCache=redis:6379
+      
+     
+      - Jwt__Key=${JWT_SECRET_KEY:-ThisIsAVeryLongAndSuperSecretKeyThatIsAtLeastSixtyFourBytesLongForHmacSha512SecurityRequirementOk}
+      
+      - EmailSettings__SmtpServer=${SMTP_SERVER:-smtp.gmail.com}
+      - EmailSettings__Port=${SMTP_PORT:-587}
+      - EmailSettings__SenderName=Cosmatics Support
+      - EmailSettings__SenderEmail=${SMTP_EMAIL:-growfet.official@gmail.com}
+      - EmailSettings__Username=${SMTP_USERNAME:-growfet.official@gmail.com}
+      - EmailSettings__Password=${SMTP_PASSWORD}
+      
+    
+      - PaymentsIntegration__Stripe__SecretKey=${STRIPE_SECRET_KEY}
+      - PaymentsIntegration__Stripe__PublishableKey=${STRIPE_PUBLISHABLE_KEY}
+      - PaymentsIntegration__Stripe__WebhookSecret=${STRIPE_WEBHOOK_SECRET}
+      
+      
+      - PaymentsIntegration__PayPal__ClientId=${PAYPAL_CLIENT_ID}
+      - PaymentsIntegration__PayPal__ClientSecret=${PAYPAL_CLIENT_SECRET}
+      - PaymentsIntegration__PayPal__BaseUrl=${PAYPAL_BASE_URL:-https://api-m.sandbox.paypal.com}
+     
+      - PaymentsIntegration__Paymob__ApiKey=${PAYMOB_API_KEY}
+      - PaymentsIntegration__Paymob__IframeId=${PAYMOB_IFRAME_ID}
+      - PaymentsIntegration__Paymob__IntegrationId=${PAYMOB_INTEGRATION_ID}
+      - PaymentsIntegration__Paymob__BaseUrl=${PAYMOB_BASE_URL:-https://accept.paymob.com/api}
+      
+
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD:-YourCertPassword123}
+    volumes:
+      - ./certs:/https:ro 
+    networks:
+      - cosmatics-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+  redis_data:
+
+networks:
+  cosmatics-network:
+    driver: bridge

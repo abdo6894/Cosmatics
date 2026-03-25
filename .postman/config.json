@@ -1,0 +1,18 @@
+{
+  "workspace": {
+    "id": "660750a6-6588-4b7a-819d-7e200b74ba77"
+  },
+  "entities": {
+    "environments": [],
+    "flows": [],
+    "globals": [],
+    "mocks": [],
+    "specs": [
+      "..\\obj\\Debug\\net8.0\\EndpointInfo\\Cosmatics.API.json"
+    ],
+    "collections": [
+      "..\\collection.json",
+      "..\\bin\\Debug\\net8.0\\collection.json"
+    ]
+  }
+}
